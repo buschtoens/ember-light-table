@@ -53,8 +53,8 @@
                     <li class="panel panel-default">
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
-                                <a role="button" href="https://github.com/offirgolan/ember-light-table/commits/e9275c53" target="_blank">
-                                  Tag: 1.4.4.e9275c53
+                                <a role="button" href="https://github.com/offirgolan/ember-light-table/commits/1ed70839" target="_blank">
+                                  Tag: 1.4.4.1ed70839
                                 </a>
                             </h4>
                         </div>
@@ -149,7 +149,8 @@ import Row from &#x27;ember-light-table/classes/Row&#x27;;
 const {
   Component,
   computed,
-  run
+  run,
+  observer
 } = Ember;
 
 /**
@@ -320,6 +321,10 @@ export default Component.extend({
 
   /**
    * Set this property to scroll to a specific px offset.
+   *
+   * This only works when &#x60;useVirtualScrollbar&#x60; is &#x60;true&#x60;, i.e. when you are
+   * using fixed headers / footers.
+   *
    * @property scrollTo
    * @type {Number}
    * @default null
@@ -328,6 +333,10 @@ export default Component.extend({
 
   /**
    * Set this property to a &#x60;Row&#x60; to scroll that &#x60;Row&#x60; into view.
+   *
+   * This only works when &#x60;useVirtualScrollbar&#x60; is &#x60;true&#x60;, i.e. when you are
+   * using fixed headers / footers.
+   *
    * @property showRow
    * @type {Row}
    * @default null
@@ -341,6 +350,22 @@ export default Component.extend({
    * @private
    */
   targetScrollOffset: null,
+
+  /**
+   * @property currentScrollOffset
+   * @type {Number}
+   * @default null
+   * @private
+   */
+  currentScrollOffset: true,
+
+  /**
+   * @property hasReachedTargetScrollOffset
+   * @type {Boolean}
+   * @default true
+   * @private
+   */
+  hasReachedTargetScrollOffset: true,
 
   /**
    * Allows to customize the component used to render rows
@@ -421,18 +446,45 @@ export default Component.extend({
 
     if (scrollTo !== _scrollTo) {
       this.set(&#x27;targetScrollOffset&#x27;, scrollTo);
+      this.set(&#x27;hasReachedTargetScrollOffset&#x27;, false);
+      run.scheduleOnce(&#x27;afterRender&#x27;, this, this.checkTargetScrollOffset);
     } else if (showRow !== _showRow) {
       this.scrollToRow(showRow);
     }
   },
 
-scrollToRow(row) {
-  if (row instanceof Row) {
-    this.set(&#x27;targetScrollOffset&#x27;, row.get(&#x27;scrollOffset&#x27;));
-  } else {
-    this.set(&#x27;targetScrollOffset&#x27;, null);
-  }
-},
+  rowObserver: observer(&#x27;rows.[]&#x27;, function() {
+    run.scheduleOnce(&#x27;afterRender&#x27;, this, this.checkTargetScrollOffset);
+  }),
+
+  checkTargetScrollOffset() {
+    if (!this.get(&#x27;hasReachedTargetScrollOffset&#x27;)) {
+      const targetScrollOffset = this.get(&#x27;targetScrollOffset&#x27;);
+      const currentScrollOffset = this.get(&#x27;currentScrollOffset&#x27;);
+
+      if (targetScrollOffset &gt; currentScrollOffset) {
+        this.set(&#x27;targetScrollOffset&#x27;, null);
+        run.schedule(&#x27;render&#x27;, null, () =&gt; {
+          this.set(&#x27;targetScrollOffset&#x27;, targetScrollOffset);
+        });
+      } else {
+        this.set(&#x27;hasReachedTargetScrollOffset&#x27;, true);
+      }
+    }
+  },
+
+  scrollToRow(row) {
+    let targetScrollOffset = null;
+
+    if (row instanceof Row) {
+      const rowElement = document.getElementById(row.get(&#x27;elementId&#x27;));
+      if (rowElement instanceof Element) {
+        targetScrollOffset = rowElement.offsetTop;
+      }
+    }
+
+    this.set(&#x27;targetScrollOffset&#x27;, targetScrollOffset);
+  },
 
   toggleExpandedRow(row) {
     let multi = this.get(&#x27;multiRowExpansion&#x27;);
@@ -502,11 +554,15 @@ scrollToRow(row) {
     /**
      * onScroll action - sent when user scrolls
      *
+     * This only works when &#x60;useVirtualScrollbar&#x60; is &#x60;true&#x60;, i.e. when you are
+     * using fixed headers / footers.
+     *
      * @event onScroll
      * @param {Number} scrollOffset The scroll offset in px
      * @param {Event} event The scroll event
      */
-    onScroll(/* scrollOffset, event */) {
+    onScroll(scrollOffset /* , event */) {
+      this.set(&#x27;currentScrollOffset&#x27;, scrollOffset)
       callAction(this, &#x27;onScroll&#x27;, ...arguments);
     },
 

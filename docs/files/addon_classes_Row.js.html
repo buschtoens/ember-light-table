@@ -53,8 +53,8 @@
                     <li class="panel panel-default">
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
-                                <a role="button" href="https://github.com/offirgolan/ember-light-table/commits/e9275c53" target="_blank">
-                                  Tag: 1.4.4.e9275c53
+                                <a role="button" href="https://github.com/offirgolan/ember-light-table/commits/1ed70839" target="_blank">
+                                  Tag: 1.4.4.1ed70839
                                 </a>
                             </h4>
                         </div>
@@ -143,7 +143,7 @@
     <pre class="prettyprint linenums">
 import Ember from &#x27;ember&#x27;;
 
-const { computed, isBlank } = Ember;
+const { computed, guidFor } = Ember;
 
  /**
   * @module Table
@@ -180,27 +180,15 @@ export default class Row extends Ember.ObjectProxy.extend({
   classNames: null,
 
   /**
-   * @property rowComponent
-   * @type {Ember.Component}
-   * @private
-   */
-  rowComponent: null,
-
-  /**
-   * @property scrollOffset
-   * @type {Number}
-   * @private
+   * Element ID for the corresponding &#x60;{{lt-row}}&#x60;.
+   *
+   * @property elementId
+   * @type {String}
    * @readOnly
    */
-  scrollOffset: computed(function() {
-    const element = this.get(&#x27;rowComponent.element&#x27;);
-
-    if (isBlank(element)) {
-      return null;
-    }
-
-    return element.offsetTop;
-  }).readOnly().volatile()
+  elementId: computed(function() {
+    return &#x60;lt-row-${guidFor(this)}&#x60;;
+  }).readOnly()
 }) {
   /**
    * @class Row

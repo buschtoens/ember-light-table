@@ -3,7 +3,7 @@
         "name": "Ember Light Table",
         "description": "Lightweight, component based table for Ember 2.x",
         "url": "https://github.com/offirgolan/ember-light-table",
-        "version": "1.4.4.e9275c53"
+        "version": "1.4.4.1ed70839"
     },
     "files": {
         "addon/-private/sync-array-proxy.js": {
@@ -271,7 +271,7 @@
             "module": "Table",
             "namespace": "",
             "file": "addon/classes/Row.js",
-            "line": 62,
+            "line": 50,
             "is_constructor": 1,
             "params": [
                 {
@@ -372,7 +372,7 @@
             "module": "Light Table",
             "namespace": "",
             "file": "addon/components/lt-body.js",
-            "line": 16,
+            "line": 17,
             "description": "```hbs\n{{#light-table table as |t|}}\n  {{#t.body multiSelect=true onRowClick=(action 'rowClicked')}}\n    {{#body.expanded-row as |row|}}\n      Hello <b>{{row.firstName}}</b>\n    {{/body.expanded-row}}\n\n    {{#if isLoading}}\n      {{#body.loader}}\n        Loading...\n      {{/body.loader}}\n    {{/if}}\n\n    {{#if table.isEmpty}}\n      {{#body.no-data}}\n        No users found.\n      {{/body.no-data}}\n    {{/if}}\n  {{/t.body}}\n{{/light-table}}\n```"
         },
         "t.foot": {
@@ -747,22 +747,10 @@
         {
             "file": "addon/classes/Row.js",
             "line": 39,
+            "description": "Element ID for the corresponding `{{lt-row}}`.",
             "itemtype": "property",
-            "name": "rowComponent",
-            "type": "{Ember.Component}",
-            "access": "private",
-            "tagname": "",
-            "class": "Row",
-            "module": "Table"
-        },
-        {
-            "file": "addon/classes/Row.js",
-            "line": 46,
-            "itemtype": "property",
-            "name": "scrollOffset",
-            "type": "{Number}",
-            "access": "private",
-            "tagname": "",
+            "name": "elementId",
+            "type": "{String}",
             "readonly": "",
             "class": "Row",
             "module": "Table"
@@ -1512,7 +1500,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 47,
+            "line": 48,
             "itemtype": "property",
             "name": "table",
             "type": "{Table}",
@@ -1523,7 +1511,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 54,
+            "line": 55,
             "itemtype": "property",
             "name": "sharedOptions",
             "type": "{Object}",
@@ -1534,7 +1522,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 61,
+            "line": 62,
             "itemtype": "property",
             "name": "tableActions",
             "type": "{Object}",
@@ -1543,7 +1531,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 67,
+            "line": 68,
             "description": "Allows a user to select a row on click. All this will do is apply the necessary\nCSS classes and add the row to `table.selectedRows`. If `multiSelect` is disabled\nonly one row will be selected at a time.",
             "itemtype": "property",
             "name": "canSelect",
@@ -1554,7 +1542,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 78,
+            "line": 79,
             "description": "Allows for expanding row. This will create a new row under the row that was\nclicked with the template provided by `body.expanded-row`.\n\n```hbs\n{{#body.expanded-row as |row|}}\n This is the content of the expanded row for {{row.firstName}}\n{{/body.expanded-row}}\n```",
             "itemtype": "property",
             "name": "canExpand",
@@ -1565,7 +1553,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 94,
+            "line": 95,
             "description": "Allows a user to select multiple rows with the `ctrl`, `cmd`, and `shift` keys.\nThese rows can be easily accessed via `table.get('selectedRows')`",
             "itemtype": "property",
             "name": "multiSelect",
@@ -1576,7 +1564,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 104,
+            "line": 105,
             "description": "When multiSelect is true, this property determines whether or not `ctrl`\n(or `cmd`) is required to select additional rows, one by one. When false,\nsimply clicking on subsequent rows will select or deselect them.\n\n`shift` to select many consecutive rows is unaffected by this property.",
             "itemtype": "property",
             "name": "multiSelectRequiresKeyboard",
@@ -1587,7 +1575,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 117,
+            "line": 118,
             "description": "Hide scrollbar when not scrolling",
             "itemtype": "property",
             "name": "autoHideScrollbar",
@@ -1598,7 +1586,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 126,
+            "line": 127,
             "description": "Allows multiple rows to be expanded at once",
             "itemtype": "property",
             "name": "multiRowExpansion",
@@ -1609,7 +1597,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 135,
+            "line": 136,
             "description": "Expand a row on click",
             "itemtype": "property",
             "name": "expandOnClick",
@@ -1620,7 +1608,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 144,
+            "line": 145,
             "description": "If true, the body block will yield columns and rows, allowing you\nto define your own table body",
             "itemtype": "property",
             "name": "overwrite",
@@ -1631,7 +1619,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 154,
+            "line": 155,
             "description": "ID of main table component. Used to generate divs for ember-wormhole",
             "itemtype": "property",
             "name": "tableId",
@@ -1643,7 +1631,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 163,
+            "line": 164,
             "itemtype": "property",
             "name": "scrollBuffer",
             "type": "{Number}",
@@ -1653,7 +1641,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 170,
+            "line": 171,
             "itemtype": "property",
             "name": "useVirtualScrollbar",
             "type": "{Boolean}",
@@ -1665,8 +1653,8 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 178,
-            "description": "Set this property to scroll to a specific px offset.",
+            "line": 179,
+            "description": "Set this property to scroll to a specific px offset.\n\nThis only works when `useVirtualScrollbar` is `true`, i.e. when you are\nusing fixed headers / footers.",
             "itemtype": "property",
             "name": "scrollTo",
             "type": "{Number}",
@@ -1676,8 +1664,8 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 186,
-            "description": "Set this property to a `Row` to scroll that `Row` into view.",
+            "line": 191,
+            "description": "Set this property to a `Row` to scroll that `Row` into view.\n\nThis only works when `useVirtualScrollbar` is `true`, i.e. when you are\nusing fixed headers / footers.",
             "itemtype": "property",
             "name": "showRow",
             "type": "{Row}",
@@ -1687,7 +1675,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 194,
+            "line": 203,
             "itemtype": "property",
             "name": "targetScrollOffset",
             "type": "{Number}",
@@ -1699,7 +1687,31 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 202,
+            "line": 211,
+            "itemtype": "property",
+            "name": "currentScrollOffset",
+            "type": "{Number}",
+            "default": "null",
+            "access": "private",
+            "tagname": "",
+            "class": "t.body",
+            "module": "Light Table"
+        },
+        {
+            "file": "addon/components/lt-body.js",
+            "line": 219,
+            "itemtype": "property",
+            "name": "hasReachedTargetScrollOffset",
+            "type": "{Boolean}",
+            "default": "true",
+            "access": "private",
+            "tagname": "",
+            "class": "t.body",
+            "module": "Light Table"
+        },
+        {
+            "file": "addon/components/lt-body.js",
+            "line": 227,
             "description": "Allows to customize the component used to render rows\n\n```hbs\n{{#light-table table as |t|}}\n   {{t.body rowComponent=(component 'my-row')}}\n{{/light-table}}\n```",
             "itemtype": "property",
             "name": "rowComponent",
@@ -1710,7 +1722,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 216,
+            "line": 241,
             "description": "Allows to customize the component used to render spanned rows\n\n```hbs\n{{#light-table table as |t|}}\n   {{t.body spannedRowComponent=(component 'my-spanned-row')}}\n{{/light-table}}\n```",
             "itemtype": "property",
             "name": "spannedRowComponent",
@@ -1721,7 +1733,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 230,
+            "line": 255,
             "description": "Allows to customize the component used to render infinite loader\n\n```hbs\n{{#light-table table as |t|}}\n   {{t.body infinityComponent=(component 'my-infinity')}}\n{{/light-table}}\n```",
             "itemtype": "property",
             "name": "infinityComponent",
@@ -1732,7 +1744,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 307,
+            "line": 359,
             "description": "onRowClick action. Handles selection, and row expansion.",
             "itemtype": "event",
             "name": "onRowClick",
@@ -1753,7 +1765,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 349,
+            "line": 401,
             "description": "onRowDoubleClick action.",
             "itemtype": "event",
             "name": "onRowDoubleClick",
@@ -1774,8 +1786,8 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 359,
-            "description": "onScroll action - sent when user scrolls",
+            "line": 411,
+            "description": "onScroll action - sent when user scrolls\n\nThis only works when `useVirtualScrollbar` is `true`, i.e. when you are\nusing fixed headers / footers.",
             "itemtype": "event",
             "name": "onScroll",
             "params": [
@@ -1795,7 +1807,7 @@
         },
         {
             "file": "addon/components/lt-body.js",
-            "line": 370,
+            "line": 426,
             "description": "onScrolledToBottom action - sent when user scrolls to the bottom",
             "itemtype": "event",
             "name": "onScrolledToBottom",
